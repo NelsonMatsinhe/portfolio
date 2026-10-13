@@ -7,6 +7,7 @@ import Footer from "./components/Footer";
 import Reveal from "./components/Reveal";
 import { experience } from "./data";
 import { LazyMotion, domAnimation, m, useReducedMotion, useScroll, useSpring } from "motion/react";
+import { useEffect } from "react";
 
 function ScrollProgress() {
   const { scrollYProgress } = useScroll();
@@ -17,19 +18,24 @@ function ScrollProgress() {
 }
 
 function App() {
+  useEffect(() => {
+    document.documentElement.classList.add("motion-ready");
+    return () => document.documentElement.classList.remove("motion-ready");
+  }, []);
+
   return (
     <LazyMotion features={domAnimation}>
       <div id="page">
         <ScrollProgress />
         <a className="skip-link" href="#main-content">Avançar para o conteúdo</a>
-        <main id="main-content">
+        <main id="main-content" tabIndex={-1}>
           <HeroSection />
           <Projects />
-          <section id="experience" className="experience-section">
+          <section id="experience" className="experience-section" aria-labelledby="experience-title">
             <div className="experience-shell">
               <div className="experience-heading">
                 <Reveal effect="left"><p className="eyebrow">02 — Percurso</p></Reveal>
-                <Reveal effect="left" delayMs={60}><h2>Trabalho em diferentes fases de produtos digitais.</h2><p>Da manutenção de plataformas em uso à implementação de novas funcionalidades.</p></Reveal>
+                <Reveal effect="left" delayMs={60}><h2 id="experience-title">Experiência profissional.</h2><p>Contribuições em desenvolvimento, evolução e manutenção de plataformas.</p></Reveal>
               </div>
               <div className="experience-list">
               {experience.map((item, index) => (
@@ -37,7 +43,7 @@ function App() {
                   <article className="experience-item">
                     <span className="experience-index">{String(index + 1).padStart(2, "0")}</span>
                     <div className="experience-employer"><h3>{item.company}</h3><p>{item.role}</p></div>
-                    <p className="experience-summary">{item.summary}</p>
+                    <ul className="experience-points">{item.points.map((point) => <li key={point}>{point}</li>)}</ul>
                     <p className="experience-period">{item.period}</p>
                   </article>
                 </Reveal>
