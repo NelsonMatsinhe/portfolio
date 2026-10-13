@@ -11,6 +11,13 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
   const gallery = project.images?.length ? project.images : project.image ? [project.image] : [];
   const [activeImage, setActiveImage] = useState(0);
   const reducedMotion = useReducedMotion();
+  const caseStudySections = [
+    { label: "Contexto", content: project.caseStudy?.context },
+    { label: "Desafio", content: project.caseStudy?.challenge },
+    { label: "Abordagem", content: project.caseStudy?.approach },
+    { label: "Decisões técnicas", content: project.caseStudy?.decisions },
+    { label: "Resultado", content: project.caseStudy?.outcome },
+  ].filter((section) => section.content);
   useEffect(() => {
     const previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     closeButtonRef.current?.focus();
@@ -54,7 +61,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
           <div className="project-gallery" aria-label={`Imagens de ${project.title}`}>
             <figure className="project-gallery-main">
               <AnimatePresence mode="wait" initial={false}>
-                <m.img key={gallery[activeImage]} src={gallery[activeImage]} alt={`Captura de ecrã de ${project.title}, imagem ${activeImage + 1} de ${gallery.length}`} width={project.id === "precos-baixos" ? 1284 : 1356} height={project.id === "precos-baixos" ? 523 : 603} decoding="async" initial={reducedMotion ? false : { opacity: 0, scale: 0.99 }} animate={{ opacity: 1, scale: 1 }} exit={reducedMotion ? undefined : { opacity: 0, scale: 1.01 }} transition={{ duration: reducedMotion ? 0 : motionTime.quick, ease: motionEase }} />
+                <m.img key={gallery[activeImage]} src={gallery[activeImage]} alt={`Captura de ecrã do projeto ${project.title}, imagem ${activeImage + 1} de ${gallery.length}`} width={project.imageWidth ?? 1356} height={project.imageHeight ?? 603} decoding="async" initial={reducedMotion ? false : { opacity: 0, scale: 0.99 }} animate={{ opacity: 1, scale: 1 }} exit={reducedMotion ? undefined : { opacity: 0, scale: 1.01 }} transition={{ duration: reducedMotion ? 0 : motionTime.quick, ease: motionEase }} />
               </AnimatePresence>
             </figure>
             {gallery.length > 1 && (
@@ -73,7 +80,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                       aria-pressed={index === activeImage}
                       onClick={() => setActiveImage(index)}
                     >
-                      <img src={image} alt="" loading="lazy" />
+                      <img src={image} alt="" width={project.imageWidth ?? 1356} height={project.imageHeight ?? 603} loading="lazy" decoding="async" />
                     </button>
                   ))}
                 </div>
@@ -88,8 +95,9 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
           {project.contribution && <div><span className="case-label">Contribuição</span><p>{project.contribution}</p></div>}
           <div><span className="case-label">Destaques</span><ul>{project.features.map((feature) => <li key={feature}>{feature}</li>)}</ul></div>
           {project.tech.length > 0 && <div><span className="case-label">Tecnologias</span><p>{project.tech.join(" · ")}</p></div>}
+          {caseStudySections.map(({ label, content }) => <div key={label}><span className="case-label">{label}</span>{Array.isArray(content) ? <ul>{content.map((item) => <li key={item}>{item}</li>)}</ul> : <p>{content}</p>}</div>)}
         </div>
-        {project.url && <a className="text-link project-live-link" href={project.url} target="_blank" rel="noreferrer">Ver site <span aria-hidden="true">↗</span></a>}
+        {project.url && <a className="text-link project-live-link" href={project.url} target="_blank" rel="noopener noreferrer" aria-label={`Abrir o site de ${project.title} num novo separador`}>Ver site <span aria-hidden="true">↗</span></a>}
       </m.section>
     </m.div>
   );

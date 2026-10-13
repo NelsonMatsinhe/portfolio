@@ -1,6 +1,7 @@
 import { AnimatePresence, m, useReducedMotion, useScroll, useTransform, type Variants } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { motionEase, motionTime } from "../motionSystem";
+import { featuredTechnologies, siteInfo } from "../data";
 
 const navigation = [
   { href: "#work", label: "Projetos" },
@@ -25,10 +26,10 @@ function PortraitFeature({ reducedMotion }: { reducedMotion: boolean | null }) {
     >
       <div className="hero-photo-frame">
         <img
-          src="/portfolio/Nelson%20Matsinhe%20Programador.webp"
+          src="/portfolio/nelson-matsinhe-portrait.webp"
           alt="Nelson Matsinhe, desenvolvedor Full-Stack"
-          width="4162"
-          height="3264"
+          width="1200"
+          height="942"
           fetchPriority="high"
         />
       </div>
@@ -42,6 +43,7 @@ export default function HeroSection() {
   const [activeSection, setActiveSection] = useState("");
   const reducedMotion = useReducedMotion();
   const heroRef = useRef<HTMLElement | null>(null);
+  const menuToggleRef = useRef<HTMLButtonElement | null>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const portraitOffset = useTransform(scrollYProgress, [0, 1], [0, 34]);
   const sequence: Variants = {
@@ -64,6 +66,17 @@ export default function HeroSection() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    if (!menuOpen) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setMenuOpen(false);
+      menuToggleRef.current?.focus();
+    };
+    document.addEventListener("keydown", closeOnEscape);
+    return () => document.removeEventListener("keydown", closeOnEscape);
+  }, [menuOpen]);
+
   return (
     <section ref={heroRef} id="top" className="hero-shell">
       <header className="site-header">
@@ -72,10 +85,11 @@ export default function HeroSection() {
           <span>Nelson Matsinhe<small>Desenvolvedor Full-Stack</small></span>
         </a>
         <m.button
+          ref={menuToggleRef}
           className="mobile-menu-toggle"
           type="button"
           aria-expanded={menuOpen}
-          aria-controls="primary-navigation"
+          aria-label={menuOpen ? "Fechar navegação principal" : "Abrir navegação principal"}
           onClick={() => setMenuOpen((open) => !open)}
           whileTap={reducedMotion ? undefined : { scale: 0.96 }}
           transition={{ duration: motionTime.quick, ease: motionEase }}
@@ -120,13 +134,14 @@ export default function HeroSection() {
             <span className="hero-title-line hero-title-offset"><m.span variants={entrance}>Matsinhe<span className="hero-title-period">.</span></m.span></span>
           </h1>
           <m.p variants={entrance} className="hero-role">Desenvolvedor <em>Full-Stack</em></m.p>
-          <m.p variants={entrance} className="hero-intro">Desenvolvo aplicações web e modernizo plataformas com Laravel, React e PHP.</m.p>
+          <m.p variants={entrance} className="hero-intro">{siteInfo.heroIntro}</m.p>
           <m.div variants={entrance} className="hero-actions">
             <m.a className="button button-bright" href="#work" whileHover={reducedMotion ? undefined : { y: -3 }} whileTap={reducedMotion ? undefined : { scale: 0.98 }} transition={{ duration: motionTime.quick, ease: motionEase }}>Explorar projetos <span aria-hidden="true">↘</span></m.a>
             <m.a className="button button-outline" href="#contact" whileHover={reducedMotion ? undefined : { y: -3 }} whileTap={reducedMotion ? undefined : { scale: 0.98 }} transition={{ duration: motionTime.quick, ease: motionEase }}>Contactar-me <span aria-hidden="true">↗</span></m.a>
+            <a className="button button-cv" href={siteInfo.cv} download>Descarregar CV <span aria-hidden="true">↓</span></a>
           </m.div>
           <m.div variants={entrance} className="hero-stack-note" aria-label="Tecnologias principais">
-            <span>Stack principal</span><strong>Laravel</strong><i>·</i><strong>React</strong><i>·</i><strong>PHP</strong><i>·</i><strong>JavaScript</strong>
+            <span>Stack principal</span>{featuredTechnologies.map((technology, index) => <span className="hero-stack-item" key={technology}>{index > 0 && <i aria-hidden="true">·</i>}<strong>{technology}</strong></span>)}
           </m.div>
         </m.div>
 
@@ -137,7 +152,6 @@ export default function HeroSection() {
           <m.div className="hero-parallax" style={{ y: reducedMotion ? 0 : portraitOffset }}>
             <PortraitFeature reducedMotion={reducedMotion} />
           </m.div>
-          <span className="hero-visual-tag" aria-hidden="true">Construir · Iterar · Melhorar</span>
         </div>
       </div>
       <a href="#work" className="hero-scroll-cue"><span className="scroll-line" aria-hidden="true" /> Descer para explorar</a>

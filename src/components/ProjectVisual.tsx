@@ -21,8 +21,8 @@ export default function ProjectVisual({ project }: ProjectVisualProps) {
       whileHover={reducedMotion ? undefined : "hover"}
       transition={{ duration: motionTime.quick, ease: motionEase }}
     >
-      <m.img className="project-screenshot" variants={hoverFrameVariants} style={{ y: reducedMotion ? 0 : imageOffset }} src={project.image} alt={`Captura de ecrã do projeto ${project.title}`} width={project.id === "precos-baixos" ? 1284 : 1356} height={project.id === "precos-baixos" ? 523 : 603} loading="lazy" decoding="async" />
-      <figcaption className="project-visual-caption" aria-hidden="true"><span>Captura do projecto</span><span>{project.type}</span></figcaption>
+      <m.img className="project-screenshot" variants={hoverFrameVariants} style={{ y: reducedMotion ? 0 : imageOffset }} src={project.image} alt={`Captura de ecrã do projeto ${project.title}`} width={project.imageWidth ?? 1356} height={project.imageHeight ?? 603} loading="lazy" decoding="async" />
+      <figcaption className="project-visual-caption" aria-hidden="true"><span>Captura do projeto</span><span>{project.type}</span></figcaption>
     </m.figure>
   );
 }
