@@ -23,7 +23,7 @@ export default function Projects() {
       <div className="project-list featured-project-list">
         {featuredProjects.map((project, index) => (
           <Reveal key={project.id} effect={index === 0 ? "left" : index === 1 ? "scale" : index === 2 ? "right" : "up"} className={`project-reveal project-reveal-${index + 1}`} delayMs={index * 50}>
-            <m.article className={`featured-project-row project-card project-card-${index + 1}`} whileHover={reducedMotion ? undefined : { y: -3 }} transition={{ duration: motionTime.quick, ease: motionEase }}>
+            <m.article className={`featured-project-row project-card project-card-${index + 1}`} whileHover={reducedMotion ? undefined : { y: -5 }} transition={reducedMotion ? { duration: 0 } : { type: "spring", stiffness: 150, damping: 20, mass: 0.7 }}>
               <div className="project-content">
                 <p className="project-type"><span>{String(index + 1).padStart(2, "0")}</span> {project.type}</p>
                 <h3>{project.title}</h3><p>{project.short}</p>

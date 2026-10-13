@@ -6,7 +6,7 @@ export const siteInfo = {
   email: "nelson.a.matsinhe@gmail.com",
   phone: "+258 84 501 3839",
   contactIntro: "Aberto a oportunidades de trabalho e colaborações.",
-  heroIntro: "Desenvolvo aplicações web e modernizo plataformas com Laravel e React. Também cuido da infraestrutura: domínios, alojamento e backups.",
+  heroIntro: "Desenvolvedor Full-Stack que cria e evolui plataformas digitais. Transformo requisitos em produtos web rápidos, escaláveis e fáceis de manter — de portais públicos a comércio eletrónico.",
   cv: "/portfolio/cv/Nelson_Matsinhe_CV.pdf",
   profile: [
     "Antes de alterar um produto, procuro perceber como ele funciona e quem o usa. Assim acrescento funcionalidades sem estragar o que já funciona e deixo o sistema fácil de manter.",
@@ -21,16 +21,20 @@ export const siteInfo = {
 };
 
 export const technologies = {
-  daily: ["Laravel", "React", "PHP", "JavaScript", "TypeScript", "MySQL", "PostgreSQL", "WordPress/WooCommerce", "Git"],
-  also: ["React Native", "Vue.js", "Java", "Python", "Bootstrap", "SharePoint", "Linux", "Docker"],
+  languages: ["JavaScript", "TypeScript", "PHP", "Python", "Java", "HTML5", "CSS3", "SQL"],
+  frameworks: ["Laravel", "React", "React Native", "Vue.js", "Bootstrap", "Axios", "Hibernate"],
+  platforms: ["MySQL", "PostgreSQL", "Oracle", "WordPress", "WooCommerce", "SharePoint", "Windows", "Linux", "Docker"],
+  tools: ["Git & GitHub", "VS Code", "PhpStorm", "Postman", "Insomnia", "Android Studio", "Figma", "Photoshop", "Canva", "Google Analytics", "Meta Insights"],
 };
 
 export const technologyGroups = [
-  { label: "As que uso no dia a dia", items: technologies.daily },
-  { label: "Também trabalho com", items: technologies.also },
+  { label: "Linguagens", items: technologies.languages },
+  { label: "Frameworks e bibliotecas", items: technologies.frameworks },
+  { label: "Plataformas e infraestrutura", items: technologies.platforms },
+  { label: "Ferramentas de trabalho", items: technologies.tools },
 ];
 
-export const featuredTechnologies = technologies.daily.slice(0, 4);
+export const featuredTechnologies = ["Laravel", "React", "TypeScript", "MySQL", "Docker"];
 
 export interface Project {
   id: string;

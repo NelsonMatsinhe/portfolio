@@ -32,10 +32,10 @@ export function revealVariants(effect: RevealEffect = "up"): Variants {
 
 export const hoverFrameVariants: Variants = {
   rest: { scale: 1 },
-  hover: { scale: 1.05, transition: { duration: 0.55, ease: motionEase } },
+  hover: { scale: 1.035, transition: { type: "spring", stiffness: 115, damping: 18, mass: 0.65 } },
 };
 
 export const projectFrameVariants: Variants = {
   rest: { y: 0 },
-  hover: { y: -5, transition: { duration: motionTime.quick, ease: motionEase } },
+  hover: { y: -5, transition: { type: "spring", stiffness: 190, damping: 22, mass: 0.55 } },
 };

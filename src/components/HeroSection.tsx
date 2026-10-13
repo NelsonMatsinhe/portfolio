@@ -12,8 +12,13 @@ const navigation = [
 ];
 
 const rise: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: motionTime.entrance, ease: motionEase } },
+  hidden: { opacity: 0, y: 30, filter: "blur(7px)" },
+  visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { type: "spring", stiffness: 82, damping: 18, mass: 0.82 } },
+};
+
+const titleReveal: Variants = {
+  hidden: { opacity: 0, y: "110%", filter: "blur(10px)" },
+  visible: { opacity: 1, y: "0%", filter: "blur(0px)", transition: { type: "spring", stiffness: 70, damping: 17, mass: 0.9 } },
 };
 
 function PortraitFeature({ reducedMotion }: { reducedMotion: boolean | null }) {
@@ -21,16 +26,26 @@ function PortraitFeature({ reducedMotion }: { reducedMotion: boolean | null }) {
     <m.figure
       className="hero-portrait-feature"
       initial={reducedMotion ? false : { opacity: 0, scale: 0.97, y: 16 }}
-      animate={{ opacity: 1, scale: 1, y: 0 }}
-      transition={{ duration: reducedMotion ? 0 : motionTime.entrance, ease: motionEase, delay: reducedMotion ? 0 : 0.24 }}
+      animate={{
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        transition: reducedMotion ? { duration: 0 } : { type: "spring", stiffness: 72, damping: 18, delay: 0.24 },
+      }}
+      whileHover={reducedMotion ? undefined : { y: -7, rotate: -0.45, transition: { type: "spring", stiffness: 150, damping: 17 } }}
+      whileTap={reducedMotion ? undefined : { scale: 0.975, rotate: 0.35, transition: { type: "spring", stiffness: 280, damping: 18 } }}
+      transition={reducedMotion ? { duration: 0 } : { type: "spring", stiffness: 72, damping: 18 }}
     >
       <div className="hero-photo-frame">
-        <img
-          src="/portfolio/nelson-matsinhe-portrait.webp"
+        <m.img
+          src="/portfolio/nelson-matsinhe-portrait-refined.webp"
           alt="Nelson Matsinhe, desenvolvedor Full-Stack"
-          width="1200"
-          height="942"
+          width="960"
+          height="754"
           fetchPriority="high"
+          whileHover={reducedMotion ? undefined : { scale: 1.075, filter: "saturate(1.08) contrast(1.04)" }}
+          whileTap={reducedMotion ? undefined : { scale: 1.025 }}
+          transition={reducedMotion ? { duration: 0 } : { type: "spring", stiffness: 130, damping: 19 }}
         />
       </div>
       <figcaption><span>Nelson Matsinhe</span><span>Maputo, MZ</span></figcaption>
@@ -130,8 +145,8 @@ export default function HeroSection() {
         <m.div className="hero-copy" variants={sequence} initial={reducedMotion ? false : "hidden"} animate="visible">
           <m.p variants={entrance} className="hero-overline"><span className="status-dot" /> Maputo, Moçambique <span className="overline-divider">/</span> Desenvolvimento web</m.p>
           <h1 className="hero-title">
-            <span className="hero-title-line"><m.span variants={entrance}>Nelson Alexandre</m.span></span>
-            <span className="hero-title-line hero-title-offset"><m.span variants={entrance}>Matsinhe<span className="hero-title-period">.</span></m.span></span>
+            <span className="hero-title-line"><m.span variants={reducedMotion ? entrance : titleReveal}>Nelson</m.span></span>
+            <span className="hero-title-line hero-title-offset"><m.span variants={reducedMotion ? entrance : titleReveal}>Matsinhe<span className="hero-title-period">.</span></m.span></span>
           </h1>
           <m.p variants={entrance} className="hero-role">Desenvolvedor <em>Full-Stack</em></m.p>
           <m.p variants={entrance} className="hero-intro">{siteInfo.heroIntro}</m.p>
@@ -146,9 +161,15 @@ export default function HeroSection() {
         </m.div>
 
         <div className="hero-visual">
-          <m.div className="hero-orbit hero-orbit-one" aria-hidden="true" initial={reducedMotion ? false : { opacity: 0, scale: 0.88 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: reducedMotion ? 0 : motionTime.entrance, delay: reducedMotion ? 0 : 0.1, ease: motionEase }} />
-          <m.div className="hero-orbit hero-orbit-two" aria-hidden="true" initial={reducedMotion ? false : { opacity: 0, scale: 0.92, rotate: -8 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ duration: reducedMotion ? 0 : motionTime.entrance, delay: reducedMotion ? 0 : 0.18, ease: motionEase }} />
-          <div className="hero-coordinate" aria-hidden="true"><span>MAPUTO</span><span>MOÇAMBIQUE</span></div>
+          <div className="hero-signal hero-signal-top" aria-hidden="true"><span>FULL-STACK</span><b>01</b></div>
+          <div className="hero-signal hero-signal-bottom" aria-hidden="true"><span>WEB SYSTEMS</span><b>MAPUTO</b></div>
+          <m.div
+            className="hero-orbit hero-orbit-two"
+            aria-hidden="true"
+            initial={reducedMotion ? false : { opacity: 0, scale: 0.92, rotate: -8 }}
+            animate={reducedMotion ? { opacity: 1, scale: 1, rotate: 0 } : { opacity: 1, scale: 1, rotate: 352 }}
+            transition={reducedMotion ? { duration: 0 } : { opacity: { duration: motionTime.entrance, delay: 0.18, ease: motionEase }, scale: { duration: motionTime.entrance, delay: 0.18, ease: motionEase }, rotate: { duration: 48, repeat: Infinity, ease: "linear" } }}
+          />
           <m.div className="hero-parallax" style={{ y: reducedMotion ? 0 : portraitOffset }}>
             <PortraitFeature reducedMotion={reducedMotion} />
           </m.div>
